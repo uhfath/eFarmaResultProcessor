@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "eFarmaResultProcessor": {
+      "commandName": "Project",
+      "commandLineArgs": "\"E:\\temp\\result_3_044_ExportProvidedRecipes_23_08_2022_21_52_part_4_of_5\""
+    }
+  }
+}
