@@ -18,7 +18,7 @@ namespace eFarmaResultProcessor
 		{
 			if (!autoClose)
 			{
-				Console.WriteLine("Нажмите ENTER для выхода");
+				Console.WriteLine("Нажмите ENTER для выхода.");
 				Console.Read();
 			}
 
@@ -37,7 +37,7 @@ namespace eFarmaResultProcessor
 
 			if (!args.Any())
 			{
-				Console.Error.WriteLine("Не указаны файлы/папки для обработки");
+				Console.Error.WriteLine("Не указаны файлы/папки для обработки.");
 				return ProcessReturn(1, options.AutoCloseOnError);
 			}
 
@@ -48,11 +48,28 @@ namespace eFarmaResultProcessor
 			var files = GetFiles(sources);
 			if (!files.Any())
 			{
-				Console.Error.WriteLine("Указанные файлы недоступны или не в том формате");
+				Console.Error.WriteLine("Указанные файлы недоступны или не в том формате.");
 				return ProcessReturn(2, options.AutoCloseOnError);
 			}
 
-			return 0;
+			try
+			{
+				var processor = new Processor(files, options);
+				var error = processor.Process();
+				if (string.IsNullOrWhiteSpace(error))
+				{
+					Console.WriteLine("Обработка завершена.");
+					return 0;
+				}
+
+				Console.Error.WriteLine(error);
+				return ProcessReturn(3, options.AutoCloseOnError);
+			}
+			catch (Exception ex)
+			{
+				Console.Error.WriteLine(ex.Message);
+				return ProcessReturn(4, options.AutoCloseOnError);
+			}
 		}
 	}
 }
